@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const fs =require("fs")
+const path = require("path")
 
 const app=express()
 
@@ -21,16 +22,17 @@ mongoose
     console.log(err);
   });
 
-// middlewares
+// middleware
 app.use(morgan("dev"))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json({limit:"2mb"}))
 app.use(cors())
 
-
+app.get('/', (req, res) => { res.send('Hello from Express!')})
 
 // importing all routes
 fs.readdirSync("./routes").map((r)=> app.use("/api",require("./routes/"+r)))
+
 
 
 app.listen(process.env.PORT || 8000,()=>{
